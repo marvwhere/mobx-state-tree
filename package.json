@@ -1,9 +1,8 @@
 {
 	"name": "mobx-state-tree",
-  "version": "3.0.3",
+	"version": "3.0.3",
 	"private": true,
-	"dependencies": {
-	},
+	"dependencies": {},
 	"scripts": {
 		"clean": "lerna clean",
 		"build": "lerna run build",
@@ -14,7 +13,8 @@
 		"release": "yarn build && lerna publish"
 	},
 	"workspaces": [
-		"packages/mobx-state-tree", "packages/mst-middlewares"
+		"packages/mobx-state-tree",
+		"packages/mst-middlewares"
 	],
 	"lint-staged": {
 		"*.{ts,tsx,js,jsx}": [

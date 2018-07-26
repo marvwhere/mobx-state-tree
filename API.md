@@ -82,6 +82,7 @@ _This reference guide lists all methods exposed by MST. Contributions like lingu
 -   [types.frozen](#typesfrozen)
 -   [types.identifier](#typesidentifier)
 -   [types.identifierNumber](#typesidentifiernumber)
+-   [types.integer](#typesinteger)
 -   [types.late](#typeslate)
 -   [types.literal](#typesliteral)
 -   [types.map](#typesmap)
@@ -90,7 +91,6 @@ _This reference guide lists all methods exposed by MST. Contributions like lingu
 -   [types.model](#typesmodel)
 -   [types.null](#typesnull)
 -   [types.number](#typesnumber)
--   [types.integer](#typesinteger)
 -   [types.optional](#typesoptional)
 -   [types.reference](#typesreference)
 -   [types.refinement](#typesrefinement)
@@ -155,7 +155,6 @@ Takes an action description as produced by the `onAction` middleware.
 
 -   `target` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)**
 -   `actions` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;IActionCall>**
--   `options` **IActionCallOptions?**
 
 ## applyPatch
 
@@ -365,10 +364,10 @@ Returns the target's parent of a given type, or throws.
 
 **Parameters**
 
--   `target` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)**
--   `type` **IAnyType**
+-   `target` **IStateTreeNode**
+-   `type` **IType&lt;any, any, T>**
 
-Returns **any**
+Returns **T**
 
 ## getPath
 
@@ -571,7 +570,6 @@ Patches can be used to deep observe a model tree.
 
 -   `target` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the model instance from which to receive patches
 -   `callback`
--   `boolean` **includeOldValue** if oldValue is included in the patches, they can be inverted. However patches will become much bigger and might not be suitable for efficient transport
 
 Returns **IDisposer** function to remove the listener
 
@@ -815,7 +813,7 @@ Creates a custom type. Custom types can be used for arbitrary immutable values, 
 The signature of the options is:
 
 ```javascript
-export type CustomTypeOptions<S, T> = {
+export interface CustomTypeOptions<S, T> {
     // Friendly name
     name: string
     // given a serialized value, how to turn it into the target type
@@ -972,6 +970,20 @@ const Todo = types.model("Todo", {
 
 Returns **IType&lt;T, T>**
 
+## types.integer
+
+Creates a type that can only contain an integer value.
+This type is used for integer values by default
+
+**Examples**
+
+```javascript
+const Size = types.model({
+  width: types.integer,
+  height: 10
+})
+```
+
 ## types.late
 
 Defines a type that gets implemented later. This is useful when you have to deal with circular dependencies.
@@ -1060,9 +1072,9 @@ The value `undefined` will be used to represent nullability.
 
 **Parameters**
 
--   `type` **IType&lt;S, T>** The type to make nullable
+-   `type` **IType&lt;C, S, M>** The type to make nullable
 
-Returns **(IType&lt;(S | [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)), (T | [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined))>)**
+Returns **(IType&lt;(C | [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)), (S | [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)), (T | [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined))>)**
 
 ## types.maybeNull
 
@@ -1071,9 +1083,9 @@ The value `null` will be used to represent no value.
 
 **Parameters**
 
--   `type` **IType&lt;S, T>** The type to make nullable
+-   `type` **IType&lt;C, S, M>** The type to make nullable
 
-Returns **(IType&lt;(S | null), (T | null)>)**
+Returns **(IType&lt;(C | null | [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)), (S | null), (T | null)>)**
 
 ## types.model
 
@@ -1096,20 +1108,6 @@ This type is used for numeric values by default
 const Vector = types.model({
   x: types.number,
   y: 1.5
-})
-```
-
-## types.integer
-
-Creates a type that can only contain an integer value.
-This type is used for integer values by default
-
-**Examples**
-
-```javascript
-const Size = types.model({
-  width: types.integer,
-  height: 10
 })
 ```
 
