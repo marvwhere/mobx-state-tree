@@ -1,4 +1,5 @@
 {
+	"name": "mobx-state-tree",
 	"private": true,
 	"dependencies": {
 	},
