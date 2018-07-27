@@ -1,5 +1,7 @@
 {
-	"private": true,
+  "name": "mobx-state-tree",
+  "version": "0.3.3",
+  "private": true,
 	"dependencies": {
 	},
 	"scripts": {
