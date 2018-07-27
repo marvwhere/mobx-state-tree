@@ -1,4 +1,6 @@
 {
+	"name": "mobx-state-tree",
+  "version": "3.0.3",
 	"private": true,
 	"dependencies": {
 	},
